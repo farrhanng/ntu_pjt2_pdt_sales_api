@@ -1,115 +1,85 @@
 package com.pdt_sales.pdt_sales.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.math.BigDecimal;
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 @Entity
+@Table(name = "product")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "productKey")
 public class Product {
+    // ProductKey Column (Primary Key)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // Unique identifier for each product record
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ProductKey")
+    private Long productKey;
 
-    private Long productKey; // Unique identifier for the product
-    private String productSKU; // Stock Keeping Unit for the product
-    private String productName; // Name of the product
-    private String modelName; // Model name of the product
-    private String productDescription; // Description of the product
-    private String productColor; // Color of the product
-    private String productSize; // Size of the product
-    private String productStyle; // Style of the product
-    private BigDecimal productCost; // Cost of the product
-    private BigDecimal productPrice; // Price of the product
+    // ProductName Column
+    @Column(name = "ProductName")
+    @NotBlank(message = "Product name is mandatory")
+    @Size(max = 255, message = "Product name should be less than or equal to 255 characters")
+    private String productName;
 
-    // Getters and Setters
+    // ModelName Column
+    @Column(name = "ModelName")
+    @Size(max = 255, message = "Model name should be less than or equal to 255 characters")
+    private String modelName;
 
-    public Long getId() {
-        return id;
-    }
+    // ProductDescription Column
+    @Column(name = "ProductDescription")
+    @Size(max = 1000, message = "Product description should be less than or equal to 1000 characters")
+    private String productDescription;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // ProductColor Column
+    @Column(name = "ProductColor")
+    @NotBlank(message = "Product color is mandatory")
+    @Size(max = 255, message = "Product color should be less than or equal to 255 characters")
+    private String productColor;
 
-    public Long getProductKey() {
-        return productKey;
-    }
+    // ProductSize Column
+    @Column(name = "ProductSize")
+    @NotBlank(message = "Product size is mandatory")
+    @Size(max = 50, message = "Product size should be less than or equal to 50 characters")
+    private String productSize;
 
-    public void setProductKey(Long productKey) {
-        this.productKey = productKey;
-    }
+    // ProductCost Column
+    @Column(name = "ProductCost")
+    @NotNull(message = "Product cost is mandatory")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Product cost must be greater than 0")
+    private double productCost;
 
-    public String getProductSKU() {
-        return productSKU;
-    }
+    // ProductPrice Column
+    @Column(name = "ProductPrice")
+    @NotNull(message = "Product price is mandatory")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Product price must be greater than 0")
+    private double productPrice;
 
-    public void setProductSKU(String productSKU) {
-        this.productSKU = productSKU;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
+    // Lombok Builder: https://devwithus.com/lombok-builder-annotation/
+    @Builder
+    public Product(String productName, String modelName, String productDescription, String productColor,
+            String productSize, double productCost, double productPrice) {
         this.productName = productName;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
         this.modelName = modelName;
-    }
-
-    public String getProductDescription() {
-        return productDescription;
-    }
-
-    public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
-    }
-
-    public String getProductColor() {
-        return productColor;
-    }
-
-    public void setProductColor(String productColor) {
         this.productColor = productColor;
-    }
-
-    public String getProductSize() {
-        return productSize;
-    }
-
-    public void setProductSize(String productSize) {
         this.productSize = productSize;
-    }
-
-    public String getProductStyle() {
-        return productStyle;
-    }
-
-    public void setProductStyle(String productStyle) {
-        this.productStyle = productStyle;
-    }
-
-    public BigDecimal getProductCost() {
-        return productCost;
-    }
-
-    public void setProductCost(BigDecimal productCost) {
         this.productCost = productCost;
-    }
-
-    public BigDecimal getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
+
 }

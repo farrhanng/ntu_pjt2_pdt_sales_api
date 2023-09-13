@@ -1,9 +1,9 @@
 package com.pdt_sales.pdt_sales.repository;
 
-public class SalesRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
 
-    public Object findById(Long saleId) {
-        return null;
-    }
-    
+import com.pdt_sales.pdt_sales.entity.Sales;
+
+public interface SalesRepository extends JpaRepository<Sales, Long> {
+    // You can add custom query methods here if needed
 }
