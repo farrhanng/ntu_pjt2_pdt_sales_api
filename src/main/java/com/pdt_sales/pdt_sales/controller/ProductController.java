@@ -6,70 +6,59 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
-import com.pdt_sales.pdt_sales.entity.Customer;
-import com.pdt_sales.pdt_sales.entity.Interaction;
-import com.pdt_sales.pdt_sales.service.CustomerService;
+import com.pdt_sales.pdt_sales.entity.Product;
+import com.pdt_sales.pdt_sales.entity.Sales;
+import com.pdt_sales.pdt_sales.service.ProductService;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/products")
 @AllArgsConstructor
 public class ProductController {
 
-  private CustomerService customerService;
+  private ProductService productService;
 
   // CREATE
   @PostMapping("")
-  public ResponseEntity<Customer> createCustomer(@Valid @RequestBody Customer customer) {
-    return new ResponseEntity<>(customerService.createCustomer(customer), HttpStatus.CREATED);
+  public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) {
+    return new ResponseEntity<>(productService.createProduct(product), HttpStatus.CREATED);
   }
 
   // READ (GET ALL)
   @GetMapping("")
-  public ResponseEntity<List<Customer>> getAllCustomers() {
-    return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
+  public ResponseEntity<List<Product>> getAllProducts() {
+    return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
   }
 
   // READ (GET ONE)
   @GetMapping("{id}")
-  public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
-    return new ResponseEntity<>(customerService.getCustomer(id), HttpStatus.OK);
+  public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+    return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
   }
 
   // UPDATE
   @PutMapping("{id}")
-  public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
-    return new ResponseEntity<>(customerService.updateCustomer(id, customer), HttpStatus.OK);
-
+  public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    return new ResponseEntity<>(productService.updateProduct(id, product), HttpStatus.OK);
   }
 
   // DELETE
   @DeleteMapping("{id}")
-  public ResponseEntity<HttpStatus> deleteCustomer(@PathVariable Long id) {
-    customerService.deleteCustomer(id);
+  public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Long id) {
+    productService.deleteProduct(id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<Customer>> searchCustomers(@RequestParam String firstName) {
-    return new ResponseEntity<>(customerService.searchCustomers(firstName), HttpStatus.OK);
+  public ResponseEntity<List<Product>> searchProducts(@RequestParam String name) {
+    return new ResponseEntity<>(productService.searchProducts(name), HttpStatus.OK);
   }
 
-  // NESTED ROUTE
-  @PostMapping("{id}/interactions")
-  public ResponseEntity<Interaction> addInteractionToCustomer(@PathVariable Long id,
-      @Valid @RequestBody Interaction interaction) {
-    return new ResponseEntity<>(customerService.addInteractionToCustomer(id, interaction), HttpStatus.CREATED);
+  @PostMapping("{id}/sales")
+  public ResponseEntity<Sales> addSalesToProduct(@PathVariable Long id,
+      @Valid @RequestBody Sales sales) {
+    return new ResponseEntity<>(productService.addSalesToProduct(id, sales), HttpStatus.CREATED);
   }
 
 }
