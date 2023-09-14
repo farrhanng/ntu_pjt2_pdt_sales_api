@@ -4,5 +4,5 @@ public class SalesNotFoundException extends RuntimeException {
     public SalesNotFoundException(Long id) {
         super("Could not find sales record " + id);
     }
+  
 }
-

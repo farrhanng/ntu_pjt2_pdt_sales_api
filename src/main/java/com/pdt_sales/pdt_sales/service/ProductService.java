@@ -3,22 +3,27 @@ package com.pdt_sales.pdt_sales.service;
 import java.util.List;
 
 import com.pdt_sales.pdt_sales.entity.Product;
-import com.pdt_sales.pdt_sales.entity.Sales;
 
+// Define the ProductService interface
 public interface ProductService {
 
-  Product createProduct(Product product);
+    // Method to create a new product
+    Product createProduct(Product product);
 
-  Product getProduct(Long id);
+    // Method to retrieve a product by their ProductKey
+    Product getProduct(Long productKey);
 
-  List<Product> getAllProducts();
+    // Method to retrieve a list of all products
+    List<Product> getAllProducts();
 
-  Product updateProduct(Long id, Product product);
+    // Method to update an existing product
+    Product updateProduct(Long productKey, Product product);
 
-  void deleteProduct(Long id);
+    // Method to delete a product by their ProductKey
+    void deleteProduct(Long productKey);
 
-  Sales addSalesToProduct(Long id, Sales sales);
+    // Method to search for products by their name
+    List<Product> searchProducts(String productName);
 
-  List<Product> searchProducts(String name);
 
 }
