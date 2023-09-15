@@ -24,17 +24,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
 @Table(name = "sales")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "productKey")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "salesId")
 public class Sales {
     // SalesId Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SalesId") // Primary key for the Sales table
+    @Column(name = "SalesID") // Primary key for the Sales table
     private Long salesId;
 
     // ProductKey Column (Foreign Key)
@@ -44,7 +46,7 @@ public class Sales {
     // OrderDate Column
     @Column(name = "OrderDate")
     @NotNull(message = "Order date is mandatory")
-    @FutureOrPresent(message = "Order date should be in the present or future")
+    // @FutureOrPresent(message = "Order date should be in the present or future")
     private LocalDate orderDate; // Use LocalDate for date values
 
     // OrderNumber Column
@@ -60,7 +62,7 @@ public class Sales {
     // OrderQuantity Column
     @Column(name = "OrderQuantity")
     @NotNull(message = "Order quantity is mandatory")
-    @Min(value = 1, message = "Order quantity should be at least 1")
+    // @Min(value = 1, message = "Order quantity should be at least 1")
     private int orderQuantity;
 
     // Lombok Builder: https://devwithus.com/lombok-builder-annotation/

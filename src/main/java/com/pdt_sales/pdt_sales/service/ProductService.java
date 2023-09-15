@@ -22,8 +22,7 @@ public interface ProductService {
     // Method to delete a product by their ProductKey
     void deleteProduct(Long productKey);
 
-    // Method to search for products by their name
-    List<Product> searchProducts(String productName);
-
+    // // Method to search for products by their name
+    // List<Product> searchProducts(String productName);
 
 }

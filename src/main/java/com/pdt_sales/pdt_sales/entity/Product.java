@@ -16,8 +16,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
+// @AllArgsConstructor // comment out because I'm manually assigning productKey
+// for now...
 @EqualsAndHashCode
 @Entity
 @Table(name = "product")
@@ -25,7 +28,7 @@ import lombok.Setter;
 public class Product {
     // ProductKey Column (Primary Key)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ProductKey")
     private Long productKey;
 
@@ -69,10 +72,10 @@ public class Product {
     @DecimalMin(value = "0.0", inclusive = false, message = "Product price must be greater than 0")
     private double productPrice;
 
-    // Lombok Builder: https://devwithus.com/lombok-builder-annotation/
     @Builder
-    public Product(String productName, String modelName, String productDescription, String productColor,
-            String productSize, double productCost, double productPrice) {
+    public Product(Long productKey, String productName, String modelName, String productDescription,
+            String productColor, String productSize, double productCost, double productPrice) {
+        this.productKey = productKey;
         this.productName = productName;
         this.modelName = modelName;
         this.productDescription = productDescription;

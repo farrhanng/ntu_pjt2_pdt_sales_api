@@ -1,12 +1,12 @@
 package com.pdt_sales.pdt_sales.service;
 
 import java.util.List;
-import java.util.Date;
 
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
 import com.pdt_sales.pdt_sales.entity.Sales;
+import com.pdt_sales.pdt_sales.exception.SalesNotFoundException;
 import com.pdt_sales.pdt_sales.repository.SalesRepository;
 
 @Service
@@ -15,58 +15,62 @@ public class SalesServiceImpl implements SalesService {
 
     private SalesRepository salesRepository;
 
+    // Create 1 sales record
     @Override
-    public Sales recordSale(Sales sale) {
-        return salesRepository.save(sale);
+    public Sales saveSales(Sales sales) {
+        return salesRepository.save(sales);
     }
 
+    // Get 1 sales record
     @Override
-    public List<Sales> getSalesByOrderNumber(String orderNumber) {
-        return salesRepository.findByOrderNumber(orderNumber);
+    public Sales getSales(Long salesId) {
+        return salesRepository.findById(salesId).orElseThrow(() -> new SalesNotFoundException(salesId));
     }
 
+    // Get all sales records
     @Override
-    public List<Sales> getSalesByDateRange(Date startDate, Date endDate) {
-        return salesRepository.findByOrderDateBetween(startDate, endDate);
+    public List<Sales> getAllSales() {
+        return salesRepository.findAll();
     }
 
+    // Update 1 sales record
     @Override
-    public Sales updateSale(Long saleId, Sales sale) {
+    public Sales updateSales(Long salesId, Sales sales) {
         // Fetch the existing sale record from the database using the saleId
-        Sales saleToUpdate = salesRepository.findById(saleId).orElseThrow(() -> new SaleNotFoundException(saleId));
-        
-        // Update the OrderQuantity
-        saleToUpdate.setOrderQuantity(sale.getOrderQuantity());
-        
+        Sales salesToUpdate = salesRepository.findById(salesId).orElseThrow(() -> new SalesNotFoundException(salesId));
+
         // Update the ProductKey
-        saleToUpdate.setProductKey(sale.getProductKey());
-        
+        salesToUpdate.setProductKey(sales.getProductKey());
+
         // Update the OrderDate
-        saleToUpdate.setOrderDate(sale.getOrderDate());
-        
+        salesToUpdate.setOrderDate(sales.getOrderDate());
+
         // Update the OrderNumber
-        saleToUpdate.setOrderNumber(sale.getOrderNumber());
-        
+        salesToUpdate.setOrderNumber(sales.getOrderNumber());
+
         // Update the CustomerKey
-        saleToUpdate.setCustomerKey(sale.getCustomerKey());
-        
+        salesToUpdate.setCustomerKey(sales.getCustomerKey());
+
+        // Update the OrderQuantity
+        salesToUpdate.setOrderQuantity(sales.getOrderQuantity());
+
         // Save the updated sale record back to the database
-        return salesRepository.save(saleToUpdate);
-    }
-    
-
-    @Override
-    public void deleteSale(Long saleId) {
-        salesRepository.deleteById(saleId);
+        return salesRepository.save(salesToUpdate);
     }
 
+    // Delete 1 sales record
     @Override
-    public List<Sales> getSalesByCustomerKey(Long customerKey) {
-        return salesRepository.findByCustomerKey(customerKey);
+    public void deleteSales(Long salesId) {
+        salesRepository.deleteById(salesId);
     }
 
-    @Override
-    public List<Sales> getSalesByProductKey(Long productKey) {
-        return salesRepository.findByProductKey(productKey);
-    }
+    // @Override
+    // public List<Sales> getSalesByCustomerKey(Long customerKey) {
+    // return salesRepository.findByCustomerKey(customerKey);
+    // }
+
+    // @Override
+    // public List<Sales> getSalesByProductKey(Long productKey) {
+    // return salesRepository.findByProductKey(productKey);
+    // }
 }

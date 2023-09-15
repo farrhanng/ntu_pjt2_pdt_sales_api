@@ -22,10 +22,10 @@ public class ProductDataLoader {
         // Clear the product table
         productRepository.deleteAll();
 
-        // Load data for the first 10 rows
+        // Load data for the first 2 rows
         List<Product> productList = List.of(
                 Product.builder()
-                        .productKey(214) // Manually assign productKey
+                        .productKey(214L) // Manually assign productKey
                         .productName("Sport-100 Helmet, Red")
                         .modelName("Sport-100")
                         .productDescription("Universal fit, well-vented, lightweight, snap-on visor.")
@@ -35,7 +35,7 @@ public class ProductDataLoader {
                         .productPrice(34.99)
                         .build(),
                 Product.builder()
-                        .productKey(215) // Manually assign productKey
+                        .productKey(215L) // Manually assign productKey
                         .productName("Sport-100 Helmet, Black")
                         .modelName("Sport-100")
                         .productDescription("Universal fit, well-vented, lightweight, snap-on visor.")
@@ -50,4 +50,5 @@ public class ProductDataLoader {
         // Save the products to the database
         productRepository.saveAll(productList);
     }
+
 }
