@@ -63,13 +63,13 @@ public class Product {
     // ProductCost Column
     @Column(name = "ProductCost")
     @NotNull(message = "Product cost is mandatory")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Product cost must be greater than 0")
+    // @DecimalMin(value = "0.0", inclusive = true, message = "Product cost must be greater than 0")
     private double productCost;
 
     // ProductPrice Column
     @Column(name = "ProductPrice")
     @NotNull(message = "Product price is mandatory")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Product price must be greater than 0")
+    // @DecimalMin(value = "0.0", inclusive = true, message = "Product price must be greater than 0")
     private double productPrice;
 
     @Builder

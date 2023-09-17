@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.List;
 
-@Component
+// @Component
 public class SalesDataLoader {
 
         private SalesRepository salesRepository;

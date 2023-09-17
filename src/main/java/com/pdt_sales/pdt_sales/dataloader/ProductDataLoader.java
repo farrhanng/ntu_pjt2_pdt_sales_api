@@ -8,7 +8,7 @@ import com.pdt_sales.pdt_sales.repository.ProductRepository;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-@Component
+// @Component
 public class ProductDataLoader {
 
     private ProductRepository productRepository;
