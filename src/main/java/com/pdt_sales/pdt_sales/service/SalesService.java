@@ -3,6 +3,7 @@ package com.pdt_sales.pdt_sales.service;
 import java.util.List;
 import java.util.Date;
 import com.pdt_sales.pdt_sales.entity.Sales;
+import com.pdt_sales.pdt_sales.entity.Product;
 
 public interface SalesService {
     // Method to save a new sales record
@@ -31,4 +32,8 @@ public interface SalesService {
 
     // Method to retrieve sales for a particular product
     // List<Sales> getSalesByProductKey(Long productKey);
+
+    // Method to calculate and set revenue for a list of sales
+    // List<Sales> calculateAndSetRevenue(List<Sales> salesList, Long productKey);
+
 }

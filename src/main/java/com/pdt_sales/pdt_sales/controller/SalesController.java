@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import com.pdt_sales.pdt_sales.entity.Sales;
@@ -18,6 +19,7 @@ public class SalesController {
 
   // Create 1 sales record
   @PostMapping("")
+  @PreAuthorize("hasRole('ADMIN')") // Only users with 'ADMIN' role can access this endpoint
   public ResponseEntity<Sales> createSales(@RequestBody Sales sales) {
     Sales newSales = salesService.saveSales(sales);
     return new ResponseEntity<>(newSales, HttpStatus.CREATED);
@@ -39,6 +41,7 @@ public class SalesController {
 
   // Update
   @PutMapping("{salesId}")
+  @PreAuthorize("hasRole('ADMIN')") // Only users with 'ADMIN' role can access this endpoint
   public ResponseEntity<Sales> updateSales(@PathVariable Long salesId, @RequestBody Sales sales) {
     Sales updatedSales = salesService.updateSales(salesId, sales);
     return new ResponseEntity<>(updatedSales, HttpStatus.OK);
@@ -46,6 +49,7 @@ public class SalesController {
 
   // Delete
   @DeleteMapping("{salesId}")
+  @PreAuthorize("hasRole('ADMIN')") // Only users with 'ADMIN' role can access this endpoint
   public ResponseEntity<HttpStatus> deleteSales(@PathVariable Long salesId) {
     salesService.deleteSales(salesId);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
