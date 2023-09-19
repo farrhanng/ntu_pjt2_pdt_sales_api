@@ -49,6 +49,19 @@ public class ProductController {
         productService.deleteProduct(productKey);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    
+    // Get Profit for 1 product
+    @GetMapping("{productKey}/profit")
+    public ResponseEntity<String> getProductProfit(@PathVariable Long productKey) {
+    Double profit = productService.getProductProfit(productKey);
+    if (profit != null) {
+        String formattedProfit = String.format("%.2f", profit);
+        String responseMessage = "The profit for Product " + productKey + " is $" + formattedProfit;
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
+    } else {
+        return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
+    }
+    }
 
     // // SEARCH BY SKU
     // @GetMapping("/search")

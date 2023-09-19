@@ -3,6 +3,7 @@ package com.pdt_sales.pdt_sales.service;
 import java.util.List;
 import java.util.Date;
 import com.pdt_sales.pdt_sales.entity.Sales;
+//import com.pdt_sales.pdt_sales.response.CustomerBillResponse;
 
 public interface SalesService {
     // Method to save a new sales record
@@ -26,9 +27,12 @@ public interface SalesService {
     // Method to delete a sale record by its ID
     void deleteSales(Long salesId);
 
+    // Method to calculate the total bill for a specific customer
+    Double calculateTotalBill(Long customerKey);
+
     // Method to retrieve sales for a particular customer
-    // List<Sales> getSalesByCustomerKey(Long customerKey);
+    List<Sales> getSalesByCustomerKey(Long customerKey);
 
     // Method to retrieve sales for a particular product
-    // List<Sales> getSalesByProductKey(Long productKey);
+    List<Sales> getSalesByProductKey(Long productKey);
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import com.pdt_sales.pdt_sales.entity.Sales;
 import com.pdt_sales.pdt_sales.service.SalesService;
+import com.pdt_sales.pdt_sales.repository.SalesRepository;
 
 @RestController
 @RequestMapping("/sales")
@@ -35,6 +36,13 @@ public class SalesController {
   public ResponseEntity<Sales> getSales(@PathVariable Long salesId) {
     Sales foundSales = salesService.getSales(salesId);
     return new ResponseEntity<>(foundSales, HttpStatus.OK);
+  }
+
+  @GetMapping("/totalBill/{customerKey}")
+  public ResponseEntity<String> getTotalBill(@PathVariable Long customerKey) {
+      Double totalBill = salesService.calculateTotalBill(customerKey);
+      String response = String.format("The total bill for customer %d is %.2f", customerKey, totalBill);
+      return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   // Update

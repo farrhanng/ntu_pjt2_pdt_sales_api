@@ -98,4 +98,21 @@ public class Product {
         this.productPrice = productPrice;
     }
 
+
+    // Add this method to calculate the total profit based on sales and margin
+    public double calculateTotalProfit() {
+        int totalQuantity = 0;
+
+        // Sum up the orderQuantity from all sales records
+        if (sales != null) {
+            for (Sales sale : sales) {
+                totalQuantity += sale.getOrderQuantity();
+            }
+        }
+
+        // Calculate total profit based on the margin and total order quantity
+        double totalProfit = this.margin * totalQuantity;
+
+        return totalProfit;
+    }
 }
