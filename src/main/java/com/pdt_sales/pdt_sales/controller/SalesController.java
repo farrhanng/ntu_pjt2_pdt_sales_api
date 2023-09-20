@@ -41,7 +41,7 @@ public class SalesController {
   @GetMapping("/totalBill/{customerKey}")
   public ResponseEntity<String> getTotalBill(@PathVariable Long customerKey) {
       Double totalBill = salesService.calculateTotalBill(customerKey);
-      String response = String.format("The total bill for customer %d is %.2f", customerKey, totalBill);
+      String response = String.format("The total bill for Customer ID %d is $%.2f", customerKey, totalBill);
       return new ResponseEntity<>(response, HttpStatus.OK);
   }
 

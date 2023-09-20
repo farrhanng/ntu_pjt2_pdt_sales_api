@@ -11,6 +11,8 @@ import com.pdt_sales.pdt_sales.entity.Sales;
 import com.pdt_sales.pdt_sales.exception.SalesNotFoundException;
 import com.pdt_sales.pdt_sales.repository.SalesRepository;
 import com.pdt_sales.pdt_sales.response.CustomerBillResponse;
+import com.pdt_sales.pdt_sales.service.ProductService;
+import com.pdt_sales.pdt_sales.repository.SalesRepository;
 
 @Service
 @AllArgsConstructor
@@ -82,13 +84,13 @@ public class SalesServiceImpl implements SalesService {
         return totalBill;
     }
 
-    // @Override
-    // public List<Sales> getSalesByCustomerKey(Long customerKey) {
-    // return salesRepository.findByCustomerKey(customerKey);
-    // }
+    @Override
+    public List<Sales> getSalesByCustomerKey(Long customerKey) {
+    return salesRepository.findByCustomerKey(customerKey);
+    }
 
-    // @Override
-    // public List<Sales> getSalesByProductKey(Long productKey) {
-    // return salesRepository.findByProductKey(productKey);
-    // }
+    @Override
+    public List<Sales> getSalesByProductKey(Long productKey) {
+    return salesRepository.findByProductKey(productKey);
+    }
 }
