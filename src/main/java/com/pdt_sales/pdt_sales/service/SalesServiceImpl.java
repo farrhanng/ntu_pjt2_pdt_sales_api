@@ -23,6 +23,7 @@ public class SalesServiceImpl implements SalesService {
 
     private SalesRepository salesRepository;
     private ProductService productService;
+    // private ProductServiceImpl productServiceImpl; // Inject ProductService using constructor method
 
     // Create 1 sales record
     @Override
@@ -97,6 +98,21 @@ public class SalesServiceImpl implements SalesService {
     public List<Sales> getSalesByCustomerKey(Long customerKey) {
     return salesRepository.findByCustomerKey(customerKey);
     }
+
+    // Compute sales revenue and set it in each Sales record
+    // @Override
+    // public List<Sales> calculateAndSetRevenue(List<Sales> salesList, Long productKey) {
+    //     for (Sales sale : salesList) {
+    //         double revenue = sale.getOrderQuantity() * product.getProductPrice();
+    //         sale.setRevenue(revenue);
+    //     }
+    //     return salesList;
+    // }
+
+    // @Override
+    // public List<Sales> getSalesByCustomerKey(Long customerKey) {
+    // return salesRepository.findByCustomerKey(customerKey);
+    // }
 
     @Override
     public List<Sales> getSalesByProductKey(Long productKey) {
