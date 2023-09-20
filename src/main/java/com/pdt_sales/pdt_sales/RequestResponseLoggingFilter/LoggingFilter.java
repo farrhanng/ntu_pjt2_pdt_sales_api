@@ -23,61 +23,6 @@ public class LoggingFilter extends OncePerRequestFilter {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);
 
-  // log all details
-  // @Override
-  // protected void doFilterInternal(HttpServletRequest request,
-  // HttpServletResponse response, FilterChain filterChain)
-  // throws ServletException, IOException {
-  // ContentCachingRequestWrapper requestWrapper = new
-  // ContentCachingRequestWrapper(request);
-  // ContentCachingResponseWrapper responseWrapper = new
-  // ContentCachingResponseWrapper(response);
-
-  // long startTime = System.currentTimeMillis();
-
-  // filterChain.doFilter(requestWrapper, responseWrapper);
-
-  // long timeTaken = System.currentTimeMillis() - startTime;
-
-  // // Get request and response bodies as strings
-  // String requestBody =
-  // getContentAsString(requestWrapper.getContentAsByteArray(),
-  // request.getCharacterEncoding());
-  // String responseBody =
-  // getContentAsString(responseWrapper.getContentAsByteArray(),
-  // response.getCharacterEncoding());
-
-  // LOGGER.info(
-  // "Filter Logs: METHOD = {}; REQUEST URI = {}; REQUEST BODY = {}; RESPONSE CODE
-  // = {}; RESPONSE BODY = {}; TIME TAKEN = {}",
-  // request.getMethod(), request.getRequestURI(), requestBody,
-  // response.getStatus(), responseBody, timeTaken);
-
-  // // Copy the request body to the response
-  // responseWrapper.copyBodyToResponse();
-  // }
-
-  // private String getContentAsString(byte[] content, String charsetName) throws
-  // UnsupportedEncodingException {
-  // if (content != null) {
-  // return new String(content, charsetName);
-  // } else {
-  // return "";
-  // }
-  // }
-
-  // REQUEST METHOD ONLY
-  // @Override
-  // protected void doFilterInternal(HttpServletRequest request,
-  // HttpServletResponse response, FilterChain filterChain)
-  // throws ServletException, IOException {
-  // LOGGER.info("Request Method: {}", request.getMethod());
-
-  // filterChain.doFilter(request, response);
-  // }
-
-  // REQUEST METHOD + SALES/PRODCT ID
-
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
