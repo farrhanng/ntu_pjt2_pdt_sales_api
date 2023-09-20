@@ -1,10 +1,13 @@
 package com.pdt_sales.pdt_sales.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.pdt_sales.pdt_sales.entity.Product;
 import com.pdt_sales.pdt_sales.entity.Sales;
@@ -71,17 +74,23 @@ public class SalesServiceImpl implements SalesService {
     }
 
     @Override
-    public Double calculateTotalBill(Long customerKey) {
+    public Map<String, Object> calculateTotalBill(Long customerKey) {
         List<Sales> salesList = salesRepository.findByCustomerKey(customerKey);
 
         double totalBill = 0.0;
+        Map<Long, Integer> productKeysAndQuantities = new HashMap<>();
 
         for (Sales sale : salesList) {
             Product product = productService.getProduct(sale.getProductKey());
             totalBill += product.getProductPrice() * sale.getOrderQuantity();
+            productKeysAndQuantities.put(sale.getProductKey(), sale.getOrderQuantity());
         }
 
-        return totalBill;
+        Map<String, Object> response = new HashMap<>();
+        response.put("totalBill", String.format("$%.2f", totalBill));
+        response.put("productKeysAndQuantities", productKeysAndQuantities);
+
+        return response;
     }
 
     @Override

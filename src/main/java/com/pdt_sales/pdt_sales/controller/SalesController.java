@@ -1,6 +1,7 @@
 package com.pdt_sales.pdt_sales.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,11 +40,10 @@ public class SalesController {
   }
 
   @GetMapping("/totalBill/{customerKey}")
-  public ResponseEntity<String> getTotalBill(@PathVariable Long customerKey) {
-      Double totalBill = salesService.calculateTotalBill(customerKey);
-      String response = String.format("The total bill for Customer ID %d is $%.2f", customerKey, totalBill);
-      return new ResponseEntity<>(response, HttpStatus.OK);
-  }
+    public ResponseEntity<Map<String, Object>> getTotalBill(@PathVariable Long customerKey) {
+        Map<String, Object> totalBillAndProducts = salesService.calculateTotalBill(customerKey);
+        return new ResponseEntity<>(totalBillAndProducts, HttpStatus.OK);
+    }
 
   // Update
   @PutMapping("{salesId}")

@@ -5,21 +5,22 @@ import java.util.List;
 
 public class CustomerBillResponse {
     
-    // private double totalBill;
-    // private List<Product> orderedProducts;
-
-    // public double getTotalBill() {
-    //     return totalBill;
-    // }
-    // public void setTotalBill(double totalBill) {
-    //     this.totalBill = totalBill;
-    // }
-    // public List<Product> getOrderedProducts() {
-    //     return orderedProducts;
-    // }
-    // public void setOrderedProducts(List<Product> orderedProducts) {
-    //     this.orderedProducts = orderedProducts;
-    // }
+    private double totalBill;
+    private List<Product> orderedProductKey;
+    public double getTotalBill() {
+        return totalBill;
+    }
+    public void setTotalBill(double totalBill) {
+        this.totalBill = totalBill;
+    }
+    public List<Product> getOrderedProductKey() {
+        return orderedProductKey;
+    }
+    public void setOrderedProductKey(List<Product> orderedProductKey) {
+        this.orderedProductKey = orderedProductKey;
+    }
+    public void setOrderedProductKeys(List<Long> orderedProductKeys) {
+    }
 
     
 }

@@ -2,6 +2,7 @@ package com.pdt_sales.pdt_sales.service;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Map;
 import com.pdt_sales.pdt_sales.entity.Sales;
 //import com.pdt_sales.pdt_sales.response.CustomerBillResponse;
 
@@ -28,7 +29,7 @@ public interface SalesService {
     void deleteSales(Long salesId);
 
     // Method to calculate the total bill for a specific customer
-    Double calculateTotalBill(Long customerKey);
+    Map<String, Object> calculateTotalBill(Long customerKey);
 
     // Method to retrieve sales for a particular customer
     List<Sales> getSalesByCustomerKey(Long customerKey);
