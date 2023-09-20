@@ -2,18 +2,26 @@ package com.pdt_sales.pdt_sales.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import com.pdt_sales.pdt_sales.entity.Product;
+import com.pdt_sales.pdt_sales.entity.Sales;
 import com.pdt_sales.pdt_sales.exception.ProductNotFoundException;
 import com.pdt_sales.pdt_sales.repository.ProductRepository;
+import com.pdt_sales.pdt_sales.repository.SalesRepository;
+
 
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+  @Autowired
   private ProductRepository productRepository;
+
+  @Autowired
+  private SalesRepository salesRepository;
 
   // Create 1 Product
   @Override
@@ -55,6 +63,26 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public void deleteProduct(Long productKey) {
     productRepository.deleteById(productKey);
+  }
+
+  @Override
+  public Double getProductProfit(Long productKey) {
+      // Fetch the Product entity by its key
+      Product product = productRepository.findById(productKey).orElse(null);
+      if (product == null) {
+          return null;
+      }
+
+      // Fetch all Sales records for this product
+      List<Sales> salesList = salesRepository.findByProductKey(productKey); // Assuming you have a method for this in SalesRepository
+
+      // Calculate the total profit
+      double totalProfit = 0.0;
+      for (Sales sale : salesList) {
+          totalProfit += (product.getProductPrice() - product.getProductCost()) * sale.getOrderQuantity();
+      }
+
+      return totalProfit;
   }
 
   // // Search
