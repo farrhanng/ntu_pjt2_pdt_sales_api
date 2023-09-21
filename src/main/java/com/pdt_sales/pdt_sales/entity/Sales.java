@@ -65,7 +65,7 @@ public class Sales {
     // OrderQuantity Column
     @Column(name = "order_quantity")
     @NotNull(message = "Order quantity is mandatory")
-    // @Min(value = 1, message = "Order quantity should be at least 1")
+    @Min(value = 1, message = "Order quantity should be at least 1")
     private int orderQuantity;
 
     // Revenue Column
