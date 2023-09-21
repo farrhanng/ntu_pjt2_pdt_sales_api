@@ -33,9 +33,9 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-
     // Get 1 product
     @GetMapping("{productKey}")
+    
     public ResponseEntity<Product> getProduct(@PathVariable Long productKey) {
         return new ResponseEntity<>(productService.getProduct(productKey), HttpStatus.OK);
     }
@@ -84,4 +84,3 @@ public class ProductController {
     // HttpStatus.OK);
     // }
 }
-
