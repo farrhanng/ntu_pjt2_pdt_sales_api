@@ -25,41 +25,34 @@ public class ProductController {
         return new ResponseEntity<>(productService.createProduct(product), HttpStatus.CREATED);
     }
 
+    // READ (GET ONE)
+    @GetMapping("{productKey}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long productKey) {
+        return new ResponseEntity<>(productService.getProduct(productKey), HttpStatus.OK);
+    }
+
     // READ (GET ALL)
     @GetMapping("")
     public ResponseEntity<List<Product>> getAllProducts() {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 
-    // READ (GET ONE)
-    @GetMapping("{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
-    }
-
     // UPDATE
-    @PutMapping("{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return new ResponseEntity<>(productService.updateProduct(id, product), HttpStatus.OK);
+    @PutMapping("{productKey}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long productKey, @RequestBody Product product) {
+        return new ResponseEntity<>(productService.updateProduct(productKey, product), HttpStatus.OK);
     }
 
     // DELETE
-    @DeleteMapping("{id}")
-    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    @DeleteMapping("{productKey}")
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Long productKey) {
+        productService.deleteProduct(productKey);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    // SEARCH BY SKU
-    @GetMapping("/search")
-    public ResponseEntity<List<Product>> searchProductsBySKU(@RequestParam String sku) {
-        return new ResponseEntity<>(productService.searchProductsBySKU(sku), HttpStatus.OK);
     }
 
     // SEARCH BY NAME
     @GetMapping("/searchByName")
-    public ResponseEntity<List<Product>> searchProductsByName(@RequestParam String name) {
-        return new ResponseEntity<>(productService.searchProductsByName(name), HttpStatus.OK);
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String productName) {
+        return new ResponseEntity<>(productService.searchProducts(productName), HttpStatus.OK);
     }
 }
-
