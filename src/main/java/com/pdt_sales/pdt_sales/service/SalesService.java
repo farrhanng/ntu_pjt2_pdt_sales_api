@@ -38,10 +38,13 @@ public interface SalesService {
 
     // Method to retrieve sales for a particular product
     List<Sales> getSalesByProductKey(Long productKey);
+
+}
+
   
     // List<Sales> getSalesByProductKey(Long productKey);
 
     // Method to calculate and set revenue for a list of sales
     // List<Sales> calculateAndSetRevenue(List<Sales> salesList, Long productKey);
 
-}
+
