@@ -1,8 +1,6 @@
 package com.pdt_sales.pdt_sales.RequestResponseLoggingFilter;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
@@ -23,6 +22,12 @@ public class LoggingFilter extends OncePerRequestFilter {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);
 
+  @Autowired
+  private PostSales putSales;
+
+  @Autowired
+  private PostProducts putProducts;
+
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
@@ -33,17 +38,31 @@ public class LoggingFilter extends OncePerRequestFilter {
     LOGGER.info("Request Method: {}; Resource: {}", request.getMethod(), resourceIdentifier);
 
     try {
-      filterChain.doFilter(request, response);
+      // Cache the request body for later use
+      ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
+      ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
+
+      filterChain.doFilter(requestWrapper, responseWrapper);
+
+      if ("POST".equals(request.getMethod())) {
+        if (requestURI.equals("/sales")) {
+          putSales.logSalesCreation(requestWrapper, responseWrapper);
+        } else if (requestURI.equals("/products")) {
+          putProducts.logProductCreation(requestWrapper, responseWrapper);
+        }
+      }
+
+      // Ensure the response is sent to the client
+      responseWrapper.copyBodyToResponse();
+
     } catch (SalesNotFoundException e) {
       LOGGER.warn("SalesNotFoundException: {}", e.getMessage());
-
     } catch (ProductNotFoundException e) {
       LOGGER.warn("ProductNotFoundException: {}", e.getMessage());
     }
   }
 
   private String getResourceIdentifierFromURI(String requestURI) {
-
     String[] parts = requestURI.split("/");
     if (parts.length >= 3) {
       String resourceType = parts[1];
@@ -64,5 +83,4 @@ public class LoggingFilter extends OncePerRequestFilter {
     // (/products or /sales)
     return "INVALID REQUEST: " + requestURI;
   }
-
 }

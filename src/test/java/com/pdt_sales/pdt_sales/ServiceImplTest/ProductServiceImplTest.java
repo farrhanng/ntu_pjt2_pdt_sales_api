@@ -129,34 +129,87 @@ public class ProductServiceImplTest {
                 "The retrieved product list should be the same as the product list");
     }
 
+    @DisplayName("Update 1 Product")
+    @Test
+    public void updateProductTest() {
+        // 1. SETUP
+        Long productKey = 1L;
+        // Create a sample existing product
+        Product existingProduct = Product.builder()
+                .productKey(productKey)
+                .productName("Existing Product")
+                .modelName("Model for Existing")
+                .productDescription("Description for Existing")
+                .productColor("Blue")
+                .productSize("Medium")
+                .productCost(15.0)
+                .productPrice(30.0)
+                .build();
 
+        // Create a sample updated product
+        Product updatedProduct = Product.builder()
+                .productKey(productKey)
+                .productName("Updated Product Name")
+                .modelName("Model for Update")
+                .productDescription("Updated Description")
+                .productColor("Red")
+                .productSize("Small")
+                .productCost(20.0)
+                .productPrice(40.0)
+                .build();
 
+        // Mock the findById method of the product repository to return the existing
+        // product
+        when(productRepository.findById(productKey)).thenReturn(Optional.of(existingProduct));
 
+        // Mock the save method of the product repository to return the updated product
+        when(productRepository.save(existingProduct)).thenReturn(updatedProduct);
 
-    // @DisplayName("Update 1 Product")
-    // @Test
-    // public void updateProductTest() {
-    
-    //     // 1. SETUP
-    //     // Create a new product object and set a productKey
-    //     Product product = new Product();
-    //     Long productKey = 1L;
-        
-    //     // Mock the findById method of the product repository to return the product object
-    //     when(productRepository.findById(productKey)).thenReturn(Optional.of(product));
-        
-    //     // Mock the save method of the product repository to return the updated product object
-    //     when(productRepository.save(product)).thenReturn(product);
-        
-    //     // 2. EXECUTE
-    //     // Call the method that we want to test
-    //     Product updatedProduct = productService.updateProduct(productKey, product);
-        
-    //     // 3. ASSERT
-    //     // Compare the actual result with the expected result
-    //     assertEquals(product, updatedProduct, "The updated product should be the same as the product object");
-    // }
+        // 2. EXECUTE
+        // Call the method that we want to test
+        Product result = productService.updateProduct(productKey, updatedProduct);
 
+        // 3. ASSERT
+        // Verify that the productRepository methods were called with the expected
+        // arguments
+        verify(productRepository, times(1)).findById(productKey);
+        verify(productRepository, times(1)).save(existingProduct);
+
+        // Verify that the result matches the updated product
+        assertEquals(updatedProduct, result);
+    }
+
+    @DisplayName("Delete 1 Product")
+    @Test
+    public void deleteProductTest() {
+        // 1. SETUP
+        Long productKey = 1L;
+
+        // Create a sample existing product
+        Product existingProduct = Product.builder()
+                .productKey(productKey)
+                .productName("Existing Product")
+                .modelName("Model for Existing")
+                .productDescription("Description for Existing")
+                .productColor("Blue")
+                .productSize("Medium")
+                .productCost(15.0)
+                .productPrice(30.0)
+                .build();
+
+        // Mock the findById method of the product repository to return the existing
+        // product
+        when(productRepository.findById(productKey)).thenReturn(Optional.of(existingProduct));
+
+        // 2. EXECUTE
+        // Call the method that we want to test
+        productService.deleteProduct(productKey);
+
+        // 3. ASSERT
+        // Verify that the productRepository's deleteById method was called with the
+        // expected argument
+        verify(productRepository, times(1)).deleteById(productKey);
+    }
 
     @DisplayName("Get Product by Non-Existent ProductKey")
     @Test
