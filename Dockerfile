@@ -7,10 +7,12 @@ WORKDIR /app
 # Copy the compiled JAR file into the container
 COPY target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
 
+# Set the environment variable for the port
+ENV PORT=8080
+
 # Expose the port that your Spring Boot application listens on (default is 8080)
-EXPOSE 8080
+EXPOSE $PORT
 
 # Define the command to run your Spring Boot application
 CMD ["java", "-jar", "app.jar"]
-# could be pdt_sales-0.0.1-SNAPSHOT.jar 
-# target/pdt_sales-0.0.1-SNAPSHOT.jar
+
