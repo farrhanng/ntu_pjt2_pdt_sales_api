@@ -1,0 +1,78 @@
+version: 2.1
+
+orbs:
+  # Define orbs for Docker and Synk
+  docker: circleci/docker@2.4.0
+  snyk: snyk/snyk@2.0.1
+  maven: circleci/maven@1.4.1
+
+executors:
+  default-executor:
+    docker:
+      - image: circleci/openjdk:17-jdk
+
+jobs:
+  build:
+    executor: default-executor
+    steps:
+      - checkout
+      - run:
+          name: Build Spring Boot App
+          command: |
+            ./mvnw clean package -DskipTests
+            mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Run Docker Compose
+          command: |
+            docker-compose -f /root/NTU_PDT_SALES_API/pdt_sales/docker-compose.yml up -d
+
+  product_test:
+    executor: default-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /app
+      - maven/with-cache:
+          steps:
+            - run:
+                name: Run Product Service Tests
+                command: |
+                  cd /root/NTU_PDT_SALES_API/pdt_sales  
+                  mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.ProductServiceImplTest
+
+  sales_test:
+    executor: default-executor
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /app
+      - maven/with-cache:
+          steps:
+            - run:
+                name: Run Sales Service Tests
+                command: |
+                  cd /root/NTU_PDT_SALES_API/pdt_sales
+                  mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.SalesServiceImptTest
+
+  # synk_scan:
+  #   executor: default-executor
+  #   steps:
+  #     - checkout
+  #     - snyk/scan:
+  #         name: Synk Security Scan
+  #         organization: your-organization
+  #         project: your-project-name
+
+workflows:
+  version: 2
+  ci_flow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      # - synk_scan:
+      #     requires:
+      #       - build
