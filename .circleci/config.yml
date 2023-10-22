@@ -28,33 +28,24 @@ jobs:
           command: |
             docker-compose -f /root/NTU_PDT_SALES_API/pdt_sales/docker-compose.yml up -d
 
-  product_test:
-    executor: default-executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /app
-      - maven/with-cache:
-          steps:
-            - run:
-                name: Run Product Service Tests
-                command: |
-                  cd /root/NTU_PDT_SALES_API/pdt_sales  
-                  mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.ProductServiceImplTest
-
-  sales_test:
-    executor: default-executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /app
-      - maven/with-cache:
-          steps:
-            - run:
-                name: Run Sales Service Tests
-                command: |
-                  cd /root/NTU_PDT_SALES_API/pdt_sales
-                  mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.SalesServiceImptTest
+  test: # Rename the job to 'test'
+      executor: default-executor
+      steps:
+        - checkout
+        - attach_workspace:
+            at: /app
+        - maven/with-cache:
+            steps:
+              - run:
+                  name: Run Product Service Tests
+                  command: |
+                    cd /root/NTU_PDT_SALES_API/pdt_sales  
+                    mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.ProductServiceImplTest
+              - run:
+                  name: Run Sales Service Tests
+                  command: |
+                    cd /root/NTU_PDT_SALES_API/pdt_sales
+                    mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.SalesServiceImptTest
 
   # synk_scan:
   #   executor: default-executor
