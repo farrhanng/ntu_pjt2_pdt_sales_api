@@ -16,8 +16,6 @@ jobs:
     executor: default-executor
     steps:
       - checkout  # Check out your code
-      - setup_remote_docker:
-          version: 20.10.9  # Choose the Docker version you want to use
       - run:
           name: Build Spring Boot App
           # Compile and package your Spring Boot app with Maven
