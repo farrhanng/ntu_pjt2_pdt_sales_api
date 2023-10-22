@@ -15,18 +15,21 @@ jobs:
   build:
     executor: default-executor
     steps:
-      - checkout
+      - checkout  # Check out your code
+      - setup_remote_docker:
+          version: 20.10.9  # Choose the Docker version you want to use
       - run:
           name: Build Spring Boot App
+          # Compile and package your Spring Boot app with Maven
           command: |
             ./mvnw clean package -DskipTests
             mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
-      - setup_remote_docker:
-          docker_layer_caching: true
+            
       - run:
-          name: Run Docker Compose
+          name: Build and Start PostgreSQL Container
           command: |
-            docker-compose -f /root/NTU_PDT_SALES_API/pdt_sales/docker-compose.yml up -d
+            # Start a PostgreSQL container using Docker Compose
+            docker-compose -f /path/to/your/docker-compose.yml up -d
 
   test:
     executor: default-executor
