@@ -1,5 +1,5 @@
 # Use a base image with Java (e.g., OpenJDK)
-FROM openjdk:17
+FROM openjdk:17-jdk-alpine
 
 # Set the working directory in the container
 WORKDIR /app
@@ -14,5 +14,5 @@ ENV PORT=8080
 EXPOSE $PORT
 
 # Define the command to run your Spring Boot application
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
 

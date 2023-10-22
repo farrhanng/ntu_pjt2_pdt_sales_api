@@ -1,24 +1,25 @@
 version: '3.8'
 
 services:
-  spring-boot-app:
+  pdt_sales-spring-boot-app:
+    container_name: pdt_sales-spring-boot-app
     image: pdt_sales_image:1.5
-    container_name: pdt_sales-app-container
+    build: .
     ports:
-      - "8080:8080"
+      - 8080:8080
     depends_on:
-      - postgres
+      - pdt_sales-postgres-db-container
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: ""
+      - DATABASE_URL=jdbc:postgresql://pdt_sales-postgres-db-container:5432/postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
 
-  postgres:
+  pdt_sales-postgres-db-container:
     image: postgres:13
-    container_name: pdt_sales-postgres-container
+    container_name: pdt_sales-postgres-db-container
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ""
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"

@@ -1,8 +1,10 @@
 package com.pdt_sales.pdt_sales.csvdataimporter;
 
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import com.pdt_sales.pdt_sales.csvimportservice.ProductCsvImportService;
@@ -10,34 +12,37 @@ import com.pdt_sales.pdt_sales.csvimportservice.SalesCsvImportService;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class CsvDataImporter {
+
+    // Inject the ResourceLoader so that we can import CSV files when using "docker-compose up"
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     @Autowired
     private ProductCsvImportService productCsvImportService;
 
     @Autowired
     private SalesCsvImportService salesCsvImportService;
 
-    @Autowired
-    private ApplicationContext applicationContext;
-
     @PostConstruct
-    public void importCsvDataOnStartup() {
-        // Load CSV files from the classpath
-        Resource productsCsvResource = applicationContext.getResource("classpath:products.csv");
-        Resource salesCsvResource = applicationContext.getResource("classpath:sales.csv");
+    public void importCsvDataOnStartup() throws IOException, CsvValidationException {
+        // Load CSV files from the classpath using resourceloader
+        Resource productsCsvResource = resourceLoader.getResource("classpath:products.csv");
+        Resource salesCsvResource = resourceLoader.getResource("classpath:sales.csv");
 
         try {
-            // Get file paths from resources
-            String productsCsvFilePath = productsCsvResource.getFile().getAbsolutePath();
-            String salesCsvFilePath = salesCsvResource.getFile().getAbsolutePath();
+            // Get input streams from resources
+            InputStream productsCsvStream = productsCsvResource.getInputStream();
+            InputStream salesCsvStream = salesCsvResource.getInputStream();
 
-            // Call your CSV import logic here
-            productCsvImportService.importCsvData(productsCsvFilePath);
-            salesCsvImportService.importCsvData(salesCsvFilePath);
-        } catch (IOException e) {
-            e.printStackTrace();
+            // Call your CSV import logic here with input streams
+            productCsvImportService.importCsvData(productsCsvStream);
+            salesCsvImportService.importCsvData(salesCsvStream);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace(); // Handle the exceptions appropriately
         }
     }
 }
