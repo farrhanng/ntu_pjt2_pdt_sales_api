@@ -30,19 +30,10 @@ jobs:
     executor: default-executor
     steps:
       - checkout
-      - attach_workspace:
-          at: /app
       - run:
-          name: Run Product Service Unit Tests
+          name: Run 8 Maven Unit Tests in 2 Java Files
           command: |
-            cd /root/NTU_PDT_SALES_API/pdt_sales  
-            mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.ProductServiceImplTest
-            
-      - run:
-          name: Run Sales Service Unit Tests
-          command: |
-            cd /root/NTU_PDT_SALES_API/pdt_sales
-            mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.SalesServiceImptTest
+            mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.ProductServiceImplTest,com.pdt_sales.pdt_sales.ServiceImplTest.SalesServiceImptTest
 
   # synk_scan:
   #   executor: default-executor
