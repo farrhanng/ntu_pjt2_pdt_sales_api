@@ -1,22 +1,23 @@
 version: 2.1
-
 orbs:
-  # Define orbs for Docker and Synk
   docker: circleci/docker@2.4.0
   snyk: snyk/snyk@2.0.1
   maven: circleci/maven@1.4.1
-
 executors:
   default-executor:
     docker:
       - image: cimg/openjdk:17.0.8
-
 jobs:
   build: # Define the 'build' job
     executor: default-executor
     steps:
       - checkout  # Check out your code from version control
-
+      
+      # Add a step to update the permissions of the mvnw file
+      - run:
+          name: Update mvnw permissions
+          command: chmod +x ./mvnw
+      
       - run:
           name: Build Spring Boot App
           # Compile and package your Spring Boot app with Maven
@@ -24,11 +25,6 @@ jobs:
             ./mvnw clean package -DskipTests
             mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
             
-      - run:
-          name: Build and Start PostgreSQL Container
-          command: |
-            # Start a PostgreSQL container using Docker Compose
-            docker-compose -f /path/to/your/docker-compose.yml up -d
 
   test:
     executor: default-executor
