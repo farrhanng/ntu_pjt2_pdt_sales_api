@@ -9,13 +9,14 @@ orbs:
 executors:
   default-executor:
     docker:
-      - image: cimg/openjdk:21.0.0
+      - image: cimg/openjdk:17.0.8
 
 jobs:
-  build:
+  build: # Define the 'build' job
     executor: default-executor
     steps:
-      - checkout  # Check out your code
+      - checkout  # Check out your code from version control
+
       - run:
           name: Build Spring Boot App
           # Compile and package your Spring Boot app with Maven
@@ -36,12 +37,13 @@ jobs:
       - attach_workspace:
           at: /app
       - run:
-          name: Run Product Service Tests
+          name: Run Product Service Unit Tests
           command: |
             cd /root/NTU_PDT_SALES_API/pdt_sales  
             mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.ProductServiceImplTest
+            
       - run:
-          name: Run Sales Service Tests
+          name: Run Sales Service Unit Tests
           command: |
             cd /root/NTU_PDT_SALES_API/pdt_sales
             mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.SalesServiceImptTest
