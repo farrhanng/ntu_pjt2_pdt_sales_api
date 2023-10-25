@@ -37,14 +37,18 @@ jobs:
           command: |
             mvn test 
 
-  # synk_scan:
-  #   executor: default-executor
-  #   steps:
-  #     - checkout
-  #     - snyk/scan:
-  #         name: Synk Security Scan
-  #         organization: your-organization
-  #         project: your-project-name
+  synk_scan:
+    executor: default-executor
+    environment:
+            IMAGE_NAME: lohcd/pdt_sales
+    steps:
+              - checkout
+              - setup_remote_docker      
+              - docker/check
+              - run: docker build -t $IMAGE_NAME .
+              - snyk/scan: 
+                  docker-image-name: $IMAGE_NAME
+                  severity-threshold: high # Set the severity threshold to filter HIGH and CRITICAL vulnerabilities
 
 workflows:
   version: 2
@@ -54,6 +58,6 @@ workflows:
       - test:
           requires:
             - build
-      # - synk_scan:
-      #     requires:
-      #       - build
+      - synk_scan:
+          requires:
+            - build
