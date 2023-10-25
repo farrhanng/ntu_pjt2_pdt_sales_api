@@ -41,6 +41,7 @@ jobs:
     executor: default-executor
     environment:
       IMAGE_NAME: lohcd/pdt_sales
+
     steps:
       - checkout
       - setup_remote_docker
@@ -51,16 +52,20 @@ jobs:
 
       - run:
           name: Build Spring Boot App
-          # Compile and package your Spring Boot app with Maven
-          command: |
-            ./mvnw clean package -DskipTests
-            mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
+          command: ./mvnw clean package -DskipTests
 
-      - run: docker build -t $IMAGE_NAME .
+      - run:
+          name: Copy artifact to context
+          # The mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar command moves the built artifact (the JAR file) from the target directory to the context directory. This is necessary because the Docker build command will only copy files from the context directory into the image.
+          command: mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
+
+      - run:
+          name: Build Docker image
+          command: docker build -t $IMAGE_NAME .
 
       - snyk/scan:
           docker-image-name: $IMAGE_NAME
-          severity-threshold: high # Set the severity threshold to filter HIGH and CRITICAL vulnerabilities
+          severity-threshold: high
 
 workflows:
   version: 2
