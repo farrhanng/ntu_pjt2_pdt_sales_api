@@ -57,8 +57,8 @@ jobs:
             mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
 
       - run:
-      name: Verify JAR File
-      command: test -f target/pdt_sales-0.0.1-SNAPSHOT.jar
+          name: Verify JAR File
+          command: test -f target/pdt_sales-0.0.1-SNAPSHOT.jar
 
       - run: docker build -t $IMAGE_NAME .
 
