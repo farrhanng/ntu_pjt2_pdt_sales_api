@@ -33,10 +33,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Start Docker Compose Services
-          command: |
-            docker-compose -f ./docker-compose.yml up -d 
-      - run:
           name: Run 8 Spring Boot Unit Tests in 2 Java Files
           command: |
             mvn test 
