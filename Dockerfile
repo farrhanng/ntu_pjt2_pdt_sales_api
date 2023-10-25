@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 
 # Copy the compiled JAR file into the container
-COPY pdt_sales-0.0.1-SNAPSHOT.jar app.jar
+COPY pdt_sales-0.0.1-SNAPSHOT.jar /app/app.jar
 
 # Set the environment variable for the port
 ENV PORT=8080
