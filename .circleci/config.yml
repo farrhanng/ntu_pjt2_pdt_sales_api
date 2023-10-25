@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Run 8 Spring Boot Unit Tests in 2 Java Files
           command: |
-            mvn test -Dtest=com.pdt_sales.pdt_sales.ServiceImplTest.ProductServiceImplTest,com.pdt_sales.pdt_sales.ServiceImplTest.SalesServiceImptTest
+            mvn test 
 
   # synk_scan:
   #   executor: default-executor

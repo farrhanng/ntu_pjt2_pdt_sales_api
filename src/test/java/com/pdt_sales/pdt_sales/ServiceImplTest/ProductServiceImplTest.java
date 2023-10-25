@@ -4,14 +4,18 @@ import com.pdt_sales.pdt_sales.entity.Product;
 import com.pdt_sales.pdt_sales.exception.ProductNotFoundException;
 import com.pdt_sales.pdt_sales.repository.ProductRepository;
 import com.pdt_sales.pdt_sales.service.ProductServiceImpl;
-// import com.sun.xml.bind.v2.schemagen.xmlschema.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -22,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@AutoConfigureTestDatabase
+@TestPropertySource(locations = "classpath:test-application.properties")
 public class ProductServiceImplTest {
 
     @Mock

@@ -3,10 +3,14 @@ package com.pdt_sales.pdt_sales.ServiceImplTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import com.pdt_sales.pdt_sales.entity.Sales;
 import com.pdt_sales.pdt_sales.repository.SalesRepository;
@@ -14,14 +18,19 @@ import com.pdt_sales.pdt_sales.service.ProductService;
 import com.pdt_sales.pdt_sales.service.SalesServiceImpl;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@AutoConfigureTestDatabase
+@TestPropertySource(locations = "classpath:test-application.properties")
 public class SalesServiceImptTest {
 
     @Mock
