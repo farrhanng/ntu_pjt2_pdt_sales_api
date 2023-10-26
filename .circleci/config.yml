@@ -71,7 +71,7 @@ jobs:
           docker-image-name: $IMAGE_NAME
           severity-threshold: high
 
-    
+  #  
   build-and-push:
     executor: default-executor  # Use a Docker executor
     steps:
