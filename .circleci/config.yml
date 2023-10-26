@@ -74,6 +74,7 @@ jobs:
   build-and-push:
     executor: default-executor
     steps:
+      - setup_remote_docker
       - checkout
       - run:
           name: Build and Push Docker Images
