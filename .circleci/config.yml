@@ -74,13 +74,30 @@ jobs:
   build-and-push:
     executor: default-executor
     steps:
-      - setup_remote_docker
       - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Update mvnw permissions
+          command: chmod +x ./mvnw
+
+      - run:
+          name: Build Spring Boot App
+          command: ./mvnw clean package -DskipTests
+
+      - save_cache:
+          key: app-jar-{{ checksum "pom.xml" }}
+          paths:
+            - ./target/pdt_sales-0.0.1-SNAPSHOT.jar
+
+      - restore_cache:
+          key: app-jar-{{ checksum "pom.xml" }}
+      
       - run:
           name: Build and Push Docker Images
           command: |
-            sudo docker-compose build
-            sudo docker-compose push lohcd/pdt_sales
+            docker-compose build
+            docker-compose push lohcd/pdt_sales
 
 
 workflows:
