@@ -106,18 +106,18 @@ jobs:
       - checkout
       - docker/check
 
-      # # Set up the environment for Docker
-      # - setup_remote_docker
+      # Set up the environment for Docker
+      - setup_remote_docker
 
-      # # Give execute permissions to mvnw
-      # - run:
-      #     name: Update mvnw permissions
-      #     command: chmod +x ./mvnw
+      # Give execute permissions to mvnw
+      - run:
+          name: Update mvnw permissions
+          command: chmod +x ./mvnw
 
-      # # Build your Spring Boot app
-      # - run:
-      #     name: Build Spring Boot App
-      #     command: ./mvnw clean package -DskipTests
+      # Build your Spring Boot app
+      - run:
+          name: Build Spring Boot App
+          command: ./mvnw clean package -DskipTests
 
       # Use the docker/build command to build your Docker image
       - docker/build:
