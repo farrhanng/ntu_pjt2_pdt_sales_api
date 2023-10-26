@@ -106,9 +106,6 @@ jobs:
       - checkout
       - docker/check
 
-      # Set up the environment for Docker
-      - setup_remote_docker
-
       # Give execute permissions to mvnw
       - run:
           name: Update mvnw permissions
