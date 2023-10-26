@@ -96,11 +96,11 @@ jobs:
 
       # Use the docker/build command to build your Docker image
       - docker/build:
-          image: lohcd/pdt_sales:1.0
+          image: lohcd/pdt_sales
 
       # Push the Docker image to Docker Hub using docker/push
       - docker/push:
-          image: lohcd/pdt_sales:1.0  # Push the same image you built
+          image: lohcd/pdt_sales  # Push the same image you built
 
 
 
