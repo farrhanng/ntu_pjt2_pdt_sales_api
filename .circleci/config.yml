@@ -78,8 +78,8 @@ jobs:
       - run:
           name: Build and Push Docker Images
           command: |
-            docker-compose build
-            docker-compose push lohcd/pdt_sales
+            sudo docker-compose build
+            sudo docker-compose push lohcd/pdt_sales
 
 
 workflows:
