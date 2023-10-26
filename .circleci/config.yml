@@ -73,7 +73,7 @@ jobs:
 
     
   build-and-push:
-    executor: docker/docker  # Use a Docker executor
+    executor: default-executor  # Use a Docker executor
     steps:
       - setup_remote_docker
       - checkout
@@ -81,13 +81,18 @@ jobs:
       - run:
           name: Update mvnw permissions
           command: chmod +x ./mvnw
-      
+
       - run:
           name: Build Spring Boot App
-          # Compile and package your Spring Boot app with Maven
-          command: |
-            ./mvnw clean package -DskipTests
-            mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
+          command: ./mvnw clean package -DskipTests
+
+      - save_cache:
+          key: app-jar-{{ checksum "pom.xml" }}
+          paths:
+            - ./target/pdt_sales-0.0.1-SNAPSHOT.jar
+
+      - restore_cache:
+          key: app-jar-{{ checksum "pom.xml" }}
 
       # Use the docker/build command to build your Docker image
       - docker/build:
