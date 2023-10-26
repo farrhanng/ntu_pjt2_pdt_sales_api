@@ -119,9 +119,7 @@ jobs:
 
       # Use the docker/build command to build your Docker image
       - docker/build:
-          context: .  # Build context is the current directory
-          dockerfile: Dockerfile  # Path to your Dockerfile
-          tag: lohcd/pdt_sales:1.0  # Tag your Docker image
+          image: lohcd/pdt_sales:1.0
 
       # Push the Docker image to Docker Hub using docker/push
       - docker/push:
