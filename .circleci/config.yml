@@ -63,11 +63,6 @@ jobs:
         key: app-jar-{{ checksum "pom.xml" }}
 
       - run:
-          name: Copy artifact to context
-          # The mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar command moves the built artifact (the JAR file) from the target directory to the context directory. This is necessary because the Docker build command will only copy files from the context directory into the image.
-          command: mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
-
-      - run:
           name: Build Docker image
           command: docker build -t $IMAGE_NAME .
 
