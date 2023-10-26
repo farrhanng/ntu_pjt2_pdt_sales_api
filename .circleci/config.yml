@@ -10,6 +10,7 @@ executors:
     docker:
       - image: cimg/openjdk:17.0.8
 
+# define jobs
 jobs:
   build: # Define the 'build' job
     executor: default-executor
@@ -79,6 +80,7 @@ jobs:
           command: |
             docker-compose build
             docker-compose push lohcd/pdt_sales
+
 
 workflows:
   version: 2
