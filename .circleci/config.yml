@@ -71,33 +71,62 @@ jobs:
           docker-image-name: $IMAGE_NAME
           severity-threshold: high
 
-  build-and-push:
-    executor: default-executor
-    steps:
-      - checkout
-      - setup_remote_docker
+  # build-and-push (old):
+  #   executor: default-executor
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker
 
-      - run:
-          name: Update mvnw permissions
-          command: chmod +x ./mvnw
+  #     - run:
+  #         name: Update mvnw permissions
+  #         command: chmod +x ./mvnw
 
-      - run:
-          name: Build Spring Boot App
-          command: ./mvnw clean package -DskipTests
+  #     - run:
+  #         name: Build Spring Boot App
+  #         command: ./mvnw clean package -DskipTests
 
-      - save_cache:
-          key: app-jar-{{ checksum "pom.xml" }}
-          paths:
-            - ./target/pdt_sales-0.0.1-SNAPSHOT.jar
+  #     - save_cache:
+  #         key: app-jar-{{ checksum "pom.xml" }}
+  #         paths:
+  #           - ./target/pdt_sales-0.0.1-SNAPSHOT.jar
 
-      - restore_cache:
-          key: app-jar-{{ checksum "pom.xml" }}
+  #     - restore_cache:
+  #         key: app-jar-{{ checksum "pom.xml" }}
       
-      - run:
-          name: Build and Push Docker Images
-          command: |
-            docker-compose build
-            docker-compose push lohcd/pdt_sales
+  #     - run:
+  #         name: Build and Push Docker Images
+  #         command: |
+  #           docker-compose build
+  #           docker-compose push lohcd/pdt_sales
+  
+  build-and-push:
+  executor: docker/docker  # Use a Docker executor
+  steps:
+    - checkout
+
+    # Set up the environment for Docker
+    - setup_remote_docker
+
+    # Give execute permissions to mvnw
+    - run:
+        name: Update mvnw permissions
+        command: chmod +x ./mvnw
+
+    # Build your Spring Boot app
+    - run:
+        name: Build Spring Boot App
+        command: ./mvnw clean package -DskipTests
+
+    # Use the docker/build command to build your Docker image
+    - docker/build:
+        context: .  # Build context is the current directory
+        dockerfile: Dockerfile  # Path to your Dockerfile
+        tag: lohcd/pdt_sales:1.0  # Tag your Docker image
+
+    # Push the Docker image to Docker Hub using docker/push
+    - docker/push:
+        image: lohcd/pdt_sales:1.0  # Push the same image you built
+
 
 
 workflows:
