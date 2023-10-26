@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  docker: circleci/docker@2.1.4
+  docker: circleci/docker@2.4.0
   snyk: snyk/snyk@2.0.1
   maven: circleci/maven@1.4.1
 
@@ -93,14 +93,18 @@ jobs:
 
       - restore_cache:
           key: app-jar-{{ checksum "pom.xml" }}
+          
+      - run:
+          name: Build Docker Image
+          command: |
+            # Build the Docker image with your desired tag.
+            docker build -t lohcd/pdt_sales:1.0 .
+      - run:
+          name: Push Docker Image to Docker Hub
+          command: |
+            # Push the Docker image to Docker Hub with the specified tag.
+            docker push lohcd/pdt_sales:1.0
 
-      # Use the docker/build command to build your Docker image
-      - docker/build:
-          image: lohcd/pdt_sales
-
-      # Push the Docker image to Docker Hub using docker/push
-      - docker/push:
-          image: lohcd/pdt_sales  # Push the same image you built
 
 
 
