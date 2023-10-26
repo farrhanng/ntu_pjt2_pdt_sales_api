@@ -75,10 +75,23 @@ workflows:
   version: 2
   ci_flow:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
       - test:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - develop
       - synk_scan:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - develop
+
