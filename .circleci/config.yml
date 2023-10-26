@@ -93,16 +93,22 @@ jobs:
 
       - restore_cache:
           key: app-jar-{{ checksum "pom.xml" }}
-          
+
+      - run:
+          name: Docker Hub Login
+          command: docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
+          environment:
+            DOCKERHUB_USERNAME: lohcd
+            DOCKERHUB_PASSWORD: sJy@@gAeQs2Qk^
+
       - run:
           name: Build Docker Image
           command: |
-            # Build the Docker image with your desired tag.
             docker build -t lohcd/pdt_sales:1.0 .
+
       - run:
           name: Push Docker Image to Docker Hub
           command: |
-            # Push the Docker image to Docker Hub with the specified tag.
             docker push lohcd/pdt_sales:1.0
 
 
