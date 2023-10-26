@@ -70,28 +70,37 @@ jobs:
           docker-image-name: $IMAGE_NAME
           severity-threshold: high
 
+  build-and-push:
+    executor: default-executor
+    steps:
+      - checkout
+      - run:
+          name: Build and Push Docker Images
+          command: |
+            docker-compose build
+            docker-compose push lohcd/pdt_sales
 
 workflows:
   version: 2
   ci_flow:
     jobs:
       - build:
-          filters:
-            branches:
-              only:
-                - develop
+          # filters:
+          #   branches:
+          #     only:
+          #       - develop
       - test:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - develop
-      - synk_scan:
+          # filters:
+          #   branches:
+          #     only:
+          #       - develop
+      - build-and-push:
           requires:
-            - build
-          filters:
-            branches:
-              only:
-                - develop
+            - test
+          # filters:
+          #   branches:
+          #     only:
+          #       - develop
 
