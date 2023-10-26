@@ -106,15 +106,21 @@ jobs:
       - checkout
       - docker/check
 
-      # Give execute permissions to mvnw
       - run:
           name: Update mvnw permissions
           command: chmod +x ./mvnw
 
-      # Build your Spring Boot app
       - run:
           name: Build Spring Boot App
           command: ./mvnw clean package -DskipTests
+
+      - save_cache:
+          key: app-jar-{{ checksum "pom.xml" }}
+          paths:
+            - ./target/pdt_sales-0.0.1-SNAPSHOT.jar
+
+      - restore_cache:
+          key: app-jar-{{ checksum "pom.xml" }}
 
       # Use the docker/build command to build your Docker image
       - docker/build:
