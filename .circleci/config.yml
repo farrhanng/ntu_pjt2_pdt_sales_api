@@ -109,9 +109,9 @@ jobs:
 
       
       - docker/build:
-          image: lohcd/pdt_sales
+          image: lohcd/pdt_sales:v1.0.0
       - docker/push:
-          image: lohcd/pdt_sales
+          image: lohcd/pdt_sales:v1.0.0
 
       # - run:
       #     name: Build Docker Image
@@ -127,15 +127,26 @@ workflows:
   version: 2
   ci_flow:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                - develop
       - test:
-          requires:
-            - build
+          filters:
+            branches:
+              only:
+                - develop
       - synk_scan:
-          requires:
-            - build
+          filters:
+            branches:
+              only:
+                - develop
       - build-and-push:
-          requires:
-            - test
+          filters:
+            branches:
+              only:
+                - develop
+
 
 
