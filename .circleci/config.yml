@@ -133,41 +133,31 @@ workflows:
           filters:
             branches:
               only:
-                - develop
+                - master
       - test:
           requires:
             - build
           filters:
             branches:
               only:
-                - develop
+                - master
       - synk_scan:
           requires:
             - build
           filters:
             branches:
               only:
-                - develop
+                - master
       - build-and-push:
           requires:
             - test
           filters:
             branches:
               only:
-                - develop
+                - master
 
   cicd_flow:
     jobs:
-      - build:
-      - test:
-          requires:
-            - build
-      - synk_scan:
-          requires:
-            - build
-      - build-and-push:
-          requires:
-            - test
       - deploy:
           requires:
             - build-and-push
