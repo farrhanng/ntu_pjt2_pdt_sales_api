@@ -133,16 +133,22 @@ workflows:
               only:
                 - develop
       - test:
+          requires:
+            - build
           filters:
             branches:
               only:
                 - develop
       - synk_scan:
+          requires:
+            - build
           filters:
             branches:
               only:
                 - develop
       - build-and-push:
+          requires:
+            - test
           filters:
             branches:
               only:
