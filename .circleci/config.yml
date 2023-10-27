@@ -94,12 +94,12 @@ jobs:
       - restore_cache:
           key: app-jar-{{ checksum "pom.xml" }}
 
-      # - run:
-      #     name: Docker Hub Login
-      #     command: docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
-      #     environment:
-      #       DOCKERHUB_USERNAME: 
-      #       DOCKERHUB_PASSWORD: 
+      - run:
+          name: Docker Hub Login
+          command: docker login -u "$DOCKER_LOGIN" -p "DOCKER_PASSWORD"
+          # environment:
+          #   DOCKERHUB_USERNAME: DOCKER_LOGIN
+          #   DOCKERHUB_PASSWORD: DOCKER_PASSWORD
       
       - docker/build:
           image: lohcd/pdt_sales
@@ -115,9 +115,6 @@ jobs:
       #     name: Push Docker Image to Docker Hub
       #     command: |
       #       docker push lohcd/pdt_sales:1.0
-
-
-
 
 workflows:
   version: 2
