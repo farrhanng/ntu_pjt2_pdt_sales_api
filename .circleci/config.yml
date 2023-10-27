@@ -125,8 +125,8 @@ jobs:
             docker push registry.heroku.com/group3-pdt-sales-api-devops/web
 
       - run:
-          name: Run Docker Compose
-          command: heroku run:compose up
+          name: Release the Heroku app
+          command: heroku container:release web -a group3-pdt-sales-api-devops
 
 workflows:
   version: 2
