@@ -98,8 +98,8 @@ jobs:
           name: Docker Hub Login
           command: docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"
           environment:
-            DOCKERHUB_USERNAME: ${DOCKER_LOGIN}
-            DOCKERHUB_PASSWORD: ${DOCKER_PASSWORD}
+            DOCKERHUB_USERNAME: $DOCKER_LOGIN
+            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
       
       - docker/build:
           image: lohcd/pdt_sales
