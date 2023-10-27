@@ -3,7 +3,7 @@ version: '3.8'
 services:
   pdt_sales-spring-boot-app:
     container_name: pdt_sales-spring-boot-app
-    image: pdt_sales_image:1.5
+    image: pdt_sales_image:v1.0.0
     build: .
     ports:
       - 8080:8080
