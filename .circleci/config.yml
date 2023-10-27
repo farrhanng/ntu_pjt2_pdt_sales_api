@@ -111,19 +111,24 @@ jobs:
       - heroku/install
       - checkout
       - run:
-          name: Deploy to Heroku
-          command: |
-            docker pull lohcd/pdt_sales:v1.0.0
-            docker tag lohcd/pdt_sales:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
-            heroku container:login
-            docker push registry.heroku.com/group3-pdt-sales-api-devops/web
-            heroku container:release web -a group3-pdt-sales-api-devops
+          name: Login to Heroku Container Registry
+          command: heroku container:login
+          
       - run:
-          name: Start Heroku Web API
+          name: Pull Spring Boot App Image from Docker Hub
+          command: docker pull your-docker-hub-username/pdt_sales_image:v1.0.0
+
+      - run:
+          name: Tag and Push the Image to Heroku Container Registry
           command: |
-            heroku container:login
-            heroku stack:set container -a group3-pdt-sales-api-devops
-            heroku container:release web -a group3-pdt-sales-api-devops
+            docker tag your-docker-hub-username/pdt_sales_image:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
+            docker push registry.heroku.com/group3-pdt-sales-api-devops/web
+
+      - run:
+          name: Deploy Heroku Docker Compose
+          command: |
+            echo "$HEROKU_API_KEY" | docker login -u _ --password-stdin registry.heroku.com
+            docker-compose -f docker-compose.heroku.yml up -d
 
 workflows:
   version: 2
