@@ -9,10 +9,10 @@ services:
       - 8080:8080
     depends_on:
       - pdt_sales-postgres-db-container
-    environment:
-      - DATABASE_URL=jdbc:postgresql://pdt_sales-postgres-db-container:5432/postgres
-      - DATABASE_USERNAME=postgres
-      - DATABASE_PASSWORD=postgres
+    # environment:
+    #   - DATABASE_URL=jdbc:postgresql://pdt_sales-postgres-db-container:5432/postgres
+    #   - DATABASE_USERNAME=postgres
+    #   - DATABASE_PASSWORD=postgres
 
   pdt_sales-postgres-db-container:
     image: postgres:13
