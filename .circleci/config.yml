@@ -94,12 +94,16 @@ jobs:
       - restore_cache:
           key: app-jar-{{ checksum "pom.xml" }}
 
+      # - run:
+      #     name: Docker Hub Login
+      #     command: echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      #     environment:
+      #       DOCKERHUB_USERNAME: $DOCKER_LOGIN
+      #       DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
+
       - run:
           name: Docker Hub Login
-          command: echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-          environment:
-            DOCKERHUB_USERNAME: $DOCKER_LOGIN
-            DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
+          command: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
 
 
 
