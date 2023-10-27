@@ -158,6 +158,16 @@ workflows:
 
   cicd_flow:
     jobs:
+      - build
+      - test:
+          reqires:
+            - build
+      - synk_scan:
+          requires:
+            - build
+      - build-and-push:
+          requires:
+            - test
       - deploy:
           requires:
             - build-and-push
