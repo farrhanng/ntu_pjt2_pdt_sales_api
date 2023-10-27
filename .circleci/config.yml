@@ -155,8 +155,9 @@ workflows:
             branches:
               only:
                 - develop
-
-    cicd_flow:
+workflows:
+  version: 2
+  cicd_flow:
     jobs:
       - build:
       - test:
