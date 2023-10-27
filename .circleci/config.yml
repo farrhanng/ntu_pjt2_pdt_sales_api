@@ -116,12 +116,12 @@ jobs:
 
       - run:
           name: Pull Spring Boot App Image from Docker Hub
-          command: docker pull lohcd/pdt_sales_image:v1.0.0
+          command: docker pull lohcd/pdt_sales:v1.0.0
 
       - run:
           name: Tag and Push the Image to Heroku Container Registry
           command: |
-            docker tag lohcd/pdt_sales_image:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
+            docker tag lohcd/pdt_sales:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
             docker push registry.heroku.com/group3-pdt-sales-api-devops/web
 
       - run:
