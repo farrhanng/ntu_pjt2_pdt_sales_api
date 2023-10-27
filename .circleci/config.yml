@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   docker: circleci/docker@2.4.0
   snyk: snyk/snyk@2.0.1
-  maven: circleci/maven@1.4.1
+  # maven: circleci/maven@1.4.1
 
 executors:
   default-executor:
@@ -34,7 +34,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run 8 Spring Boot Unit Tests in 2 Java Files
+          name: Run 10 Spring Boot Unit Tests in 2 Java Files
           command: |
             mvn test 
 
@@ -71,7 +71,6 @@ jobs:
           docker-image-name: $IMAGE_NAME
           severity-threshold: high
 
-  #  
   build-and-push:
     executor: default-executor  # Use a Docker executor
     steps:
@@ -94,34 +93,37 @@ jobs:
       - restore_cache:
           key: app-jar-{{ checksum "pom.xml" }}
 
-      # - run:
-      #     name: Docker Hub Login
-      #     command: echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-      #     environment:
-      #       DOCKERHUB_USERNAME: $DOCKER_LOGIN
-      #       DOCKERHUB_PASSWORD: $DOCKER_PASSWORD
-
       - run:
           name: Docker Hub Login
           command: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
 
-
-
-      
       - docker/build:
-          image: lohcd/pdt_sales:v1.0.0
+          image: lohcd/pdt_sales
+          tag: v1.0.0
       - docker/push:
-          image: lohcd/pdt_sales:v1.0.0
+          image: lohcd/pdt_sales
+          tag: v1.0.0
 
-      # - run:
-      #     name: Build Docker Image
-      #     command: |
-      #       docker build -t lohcd/pdt_sales:1.0 .
-
-      # - run:
-      #     name: Push Docker Image to Docker Hub
-      #     command: |
-      #       docker push lohcd/pdt_sales:1.0
+  deploy:
+      executor: default-executor
+      steps:
+        - setup_remote_docker
+        - heroku/install
+        - checkout
+        - run:
+            name: Deploy to Heroku
+            command: |
+              docker pull lohcd/pdt_sales:v1.0.0
+              docker tag lohcd/pdt_sales:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
+              docker push registry.heroku.com/group3-pdt-sales-api-devops/web
+              heroku container:release web -a group3-pdt-sales-api-devops
+        - run:
+            name: Start Heroku Web API
+            command: |
+              heroku login -i
+              heroku container:login
+              heroku stack:set container -a group3-pdt-sales-api-devops
+              heroku container:release web -a group3-pdt-sales-api-devops
 
 workflows:
   version: 2
@@ -154,5 +156,18 @@ workflows:
               only:
                 - develop
 
-
-
+    cicd_flow:
+    jobs:
+      - build:
+      - test:
+          requires:
+            - build
+      - synk_scan:
+          requires:
+            - build
+      - build-and-push:
+          requires:
+            - test
+      - deploy:
+          requires:
+            - build-and-push
