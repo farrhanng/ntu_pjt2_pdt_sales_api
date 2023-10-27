@@ -115,8 +115,9 @@ jobs:
           command: |
             docker pull lohcd/pdt_sales:v1.0.0
             docker tag lohcd/pdt_sales:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
-            heroku container:login
             docker push registry.heroku.com/group3-pdt-sales-api-devops/web
+            heroku container:login
+            docker-compose -f docker-compose.yml up -d
             heroku container:release web -a group3-pdt-sales-api-devops
       - run:
           name: Start Heroku Web API
