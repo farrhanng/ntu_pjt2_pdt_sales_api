@@ -105,25 +105,25 @@ jobs:
           tag: v1.0.0
 
   deploy:
-      executor: default-executor
-      steps:
-        - setup_remote_docker
-        - heroku/install
-        - checkout
-        - run:
-            name: Deploy to Heroku
-            command: |
-              docker pull lohcd/pdt_sales:v1.0.0
-              docker tag lohcd/pdt_sales:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
-              docker push registry.heroku.com/group3-pdt-sales-api-devops/web
-              heroku container:release web -a group3-pdt-sales-api-devops
-        - run:
-            name: Start Heroku Web API
-            command: |
-              heroku login -i
-              heroku container:login
-              heroku stack:set container -a group3-pdt-sales-api-devops
-              heroku container:release web -a group3-pdt-sales-api-devops
+    executor: default-executor
+    steps:
+      - setup_remote_docker
+      - heroku/install
+      - checkout
+      - run:
+          name: Deploy to Heroku
+          command: |
+            docker pull lohcd/pdt_sales:v1.0.0
+            docker tag lohcd/pdt_sales:v1.0.0 registry.heroku.com/group3-pdt-sales-api-devops/web
+            docker push registry.heroku.com/group3-pdt-sales-api-devops/web
+            echo "$HEROKU_API_KEY" | heroku login --interactive
+            heroku container:release web -a group3-pdt-sales-api-devops
+      - run:
+          name: Start Heroku Web API
+          command: |
+            heroku container:login
+            heroku stack:set container -a group3-pdt-sales-api-devops
+            heroku container:release web -a group3-pdt-sales-api-devops
 
 workflows:
   version: 2
@@ -133,28 +133,28 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - develop
       - test:
           requires:
             - build
           filters:
             branches:
               only:
-                - master
+                - develop
       - synk_scan:
           requires:
             - build
           filters:
             branches:
               only:
-                - master
+                - develop
       - build-and-push:
           requires:
             - test
           filters:
             branches:
               only:
-                - master
+                - develop
 
   cicd_flow:
     jobs:
