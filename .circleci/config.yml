@@ -161,7 +161,7 @@ workflows:
 
   cicd_flow:
     jobs:
-      - build
+      - build:
           filters:
             branches:
               only:
@@ -172,14 +172,14 @@ workflows:
           filters:
             branches:
               only:
-                - release            
+                - release
       - synk_scan:
           requires:
             - build
           filters:
             branches:
               only:
-                - release            
+                - release
       - build-and-push:
           requires:
             - test
@@ -193,5 +193,5 @@ workflows:
           filters:
             branches:
               only:
-                - release            
+                - release           
 
