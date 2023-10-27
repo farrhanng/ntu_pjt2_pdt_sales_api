@@ -128,6 +128,8 @@ jobs:
           name: Deploy Heroku Docker Compose
           command: |
             echo "$HEROKU_API_KEY" | docker login -u _ --password-stdin registry.heroku.com
+            chmod +x ./mvnw
+            ./mvnw clean package -DskipTests
             docker-compose -f docker-compose.heroku.yml up -d
 
 workflows:
