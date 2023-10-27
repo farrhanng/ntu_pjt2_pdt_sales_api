@@ -162,16 +162,36 @@ workflows:
   cicd_flow:
     jobs:
       - build
+          filters:
+            branches:
+              only:
+                - release
       - test:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - release            
       - synk_scan:
           requires:
             - build
+          filters:
+            branches:
+              only:
+                - release            
       - build-and-push:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - release
       - deploy:
           requires:
             - build-and-push
+          filters:
+            branches:
+              only:
+                - release            
 
