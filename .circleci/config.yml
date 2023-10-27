@@ -118,6 +118,12 @@ jobs:
             heroku container:login
             docker push registry.heroku.com/group3-pdt-sales-api-devops/web
             heroku container:release web -a group3-pdt-sales-api-devops
+      - run:
+          name: Start Heroku Web API
+          command: |
+            heroku container:login
+            heroku stack:set container -a group3-pdt-sales-api-devops
+            heroku container:release web -a group3-pdt-sales-api-devops
 
 workflows:
   version: 2
