@@ -12,3 +12,4 @@ You should include snyk scan in your CI pipeline.
 
 test commit 6
 test commit 9
+test commit 10
