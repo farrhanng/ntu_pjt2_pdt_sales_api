@@ -1,18 +1,20 @@
+# Define the CircleCI version and any orbs (pre-configured CircleCI packages that provide commands, jobs, and executors)
 version: 2.1
-
 orbs:
   docker: circleci/docker@2.4.0
   snyk: snyk/snyk@2.0.1
   heroku: circleci/heroku@2.0.0
 
+# Define a custom executor with a specified Docker image
 executors:
   default-executor:
     docker:
       - image: cimg/openjdk:17.0.8
 
-# define jobs
+# Define a series of jobs to be run
 jobs:
-  build: # Define the 'build' job
+  # The 'build' job checks out the code and packages the Spring Boot app
+  build: 
     executor: default-executor
     steps:
       - checkout  # Check out your code from version control
@@ -28,7 +30,8 @@ jobs:
           command: |
             ./mvnw clean package -DskipTests
             mv target/pdt_sales-0.0.1-SNAPSHOT.jar app.jar
-      
+  
+  # The 'test' job checks out the code and runs unit tests
   test:
     executor: default-executor
     steps:
@@ -38,6 +41,7 @@ jobs:
           command: |
             mvn test 
 
+  # The 'synk_scan' job performs a security scan on the Docker image using Snyk
   synk_scan:
     executor: default-executor
     environment:
@@ -71,6 +75,7 @@ jobs:
           docker-image-name: $IMAGE_NAME
           severity-threshold: high
 
+  # The 'build-and-push' job creates a Docker image and pushes it to Docker Hub
   build-and-push:
     executor: default-executor  # Use a Docker executor
     steps:
@@ -104,6 +109,7 @@ jobs:
           image: lohcd/pdt_sales
           tag: v1.0.0
 
+  # The 'deploy' job deploys the application to Heroku
   deploy:
     executor: default-executor
     steps:
@@ -128,8 +134,10 @@ jobs:
           name: Release the Heroku app
           command: heroku container:release web -a group3-pdt-sales-api-devops
 
+# Define workflows that specify which jobs run and in what order, based on the branch that's pushed
 workflows:
   version: 2
+  # The 'ci_flow' workflow is triggered when there are changes to the 'develop' branch
   ci_flow:
     jobs:
       - build:
@@ -159,6 +167,7 @@ workflows:
               only:
                 - develop
 
+  # The 'cicd_flow' workflow is triggered when there are changes to the 'release' branch
   cicd_flow:
     jobs:
       - build:
